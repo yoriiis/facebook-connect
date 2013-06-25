@@ -23,12 +23,12 @@ var _FB = {
 			self.status = response.status;
 
 			if( response.status === 'connected' ){
-                self.getData( what, callback );
-            }else if( response.status === 'not_authorized' ){
-                self.login( what, scope, callback );
-            }else{
-                self.login( what, scope, callback );
-            }
+		        	self.getData( what, callback );
+		        }else if( response.status === 'not_authorized' ){
+		                self.login( what, scope, callback );
+		        }else{
+		                self.login( what, scope, callback );
+		        }
 
 		});
 
@@ -41,7 +41,7 @@ var _FB = {
 		FB.login(function( response ) {
 
 	        if( response.authResponse ) {
-	            self.getData( what, callback );
+		        self.getData( what, callback );
 	        }else{
 	        	self.status = response.status;
 	        }
@@ -57,20 +57,20 @@ var _FB = {
 		FB.api(what, function( response ) {
 			self.data = response;
 			callback();
-	    });
+	    	});
 
 	},
 
 	loadSDK: (function(){
 
 		var language = ( document.getElementById('__FB').getAttribute('data-language') != null ) ? document.getElementById('__FB').getAttribute('data-language') : 'fr_FR',
-			d = document, js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0], divFB = document.createElement('div');
+		    d = document, js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0], divFB = document.createElement('div');
 
-        if ( d.getElementById( id ) ) { return; }
-        js = d.createElement('script'); js.id = id; js.async = true;
-        divFB.id = 'fb-root';
-        js.src = '//connect.facebook.net/' + language + '/all.js';
-        d.getElementsByTagName('body')[0].appendChild( divFB ).appendChild( js );
+	        if ( d.getElementById( id ) ) { return; }
+	        js = d.createElement('script'); js.id = id; js.async = true;
+	        divFB.id = 'fb-root';
+	        js.src = '//connect.facebook.net/' + language + '/all.js';
+	        d.getElementsByTagName('body')[0].appendChild( divFB ).appendChild( js );
 
 	})(),
 
