@@ -40,13 +40,13 @@ var _FB = {
 
 		FB.login(function( response ) {
 
-	        if( response.authResponse ) {
-		        self.getData( what, callback );
-	        }else{
-	        	self.status = response.status;
-	        }
+		        if( response.authResponse ) {
+			        self.getData( what, callback );
+		        }else{
+		        	self.status = response.status;
+		        }
 	        
-	    }, {scope: scope});
+		}, {scope: scope});
 
 	},
 
