@@ -93,7 +93,7 @@ var _FB = {
 			self.data = response;
 			callback();
 
-	    });
+		});
 
 	},
 
