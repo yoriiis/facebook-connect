@@ -42,19 +42,19 @@ var _FB = {
 			if( response.status === 'connected' ){
 
 				//User is connected, get data
-                self.getData( what, callback );
+                                self.getData( what, callback );
 
-            }else if( response.status === 'not_authorized' ){
+            		}else if( response.status === 'not_authorized' ){
 
-            	//User is not authorized
-                self.login( what, scope, callback );
+	    			//User is not authorized
+	        		self.login( what, scope, callback );
 
-            }else{
+            		}else{
 
-            	//Other case
-                self.login( what, scope, callback );
-
-            }
+		            	//Other case
+		                self.login( what, scope, callback );
+		
+			}
 
 		});
 
@@ -67,19 +67,19 @@ var _FB = {
 		//Facebook login function
 		FB.login(function( response ) {
 
-	        if( response.authResponse ) {
-
-	        	//Save accessToken and signedRequest
-	        	self.accessToken = response.authResponse.accessToken;
+		        if( response.authResponse ) {
+	
+		        	//Save accessToken and signedRequest
+		        	self.accessToken = response.authResponse.accessToken;
 				self.signedRequest = response.authResponse.signedRequest;
-
-	            self.getData( what, callback );
-
-	        }else{
-	        	self.status = response.status;
-	        }
-	        
-	    }, {scope: scope});
+	
+		            	self.getData( what, callback );
+	
+		        }else{
+		        	self.status = response.status;
+		        }
+		        
+		}, {scope: scope});
 
 	},
 
@@ -119,7 +119,7 @@ var _FB = {
 
 		//Get the language in data attribut if available, else default language
 		var defaultLanguage = 'fr_FR',
-			language = ( document.getElementById('__FB').getAttribute('data-language') != null && document.getElementById('__FB').getAttribute('data-language') != '' ) ? document.getElementById('__FB').getAttribute('data-language') : defaultLanguage;
+		    language = ( document.getElementById('__FB').getAttribute('data-language') != null && document.getElementById('__FB').getAttribute('data-language') != '' ) ? document.getElementById('__FB').getAttribute('data-language') : defaultLanguage;
 
 		//Load the Facebook SDK JS and add the tag "fb-root"
 		(function(d, s, id){
