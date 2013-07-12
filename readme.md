@@ -3,41 +3,50 @@ Facebook connect
 
 Easy way to use the Facebook API and the connect interface.
 
-Call the Facebook plugins in your footer page. You can choose the language of SDK with data-language attribut (optionnal), by default french. Don't add "fb-root" tag and the SDK, it's automatically add.
+Add only the Facebook plugins in your footer page. You can choose the language of SDK with data-language attribut (optionnal), by default french. Don't add "fb-root" tag and the SDK, it's automatically add.
 
 ```html
 <script src="js/facebook.js" id="__FB"></script>
 <script src="js/facebook.js" data-language="en_US" id="__FB"></script>
 ```
 
-Insert your code in _FB.ready function (single instance).
+Insert your code in _FB.ready function (single instance, equivalent to window.fbAsyncInit function).
 
 ```javascript
 _FB.ready(function(){ });
 ```
 
-Instanciate Facebook app with just your application ID. You can pass channel url in second parameter (optionnal).
+###Instanciate Facebook app.
+This function instanciate your application and get automatically data if user is already connected and authorized.
+
+- First parameter 		: Facebook application ID
+- Second parameter 		: What you want to get
+- Third parameter 		: The scope with permission on private data which require a token (separate by comma)
 
 ```javascript
-_FB.init('APP_ID');
+_FB.init('XXXXXXXXXXXXXXX', '/me', 'email,user_birthday', function(){
+	console.log( _FB.data );
+});
 ```
 
-
-Connect user, add permissions with token and get data.
-
-- First parameter : what you want to get
-- Second parameter : the scope with permission on private data which require a token (separate by comma)
+###Connection
+Connect the user with his Facebook account. If user isn't connected or authorized, popup authentification will open.
 
 ```javascript
-_FB.getLoginStatus('/me', 'email,user_birthday', function(){ });
+_FB.connect(function(){
+	console.log( _FB.data );
+});
 ```
 
 Access to JSON data with _FB object available in window
 
 ```javascript
 _FB.data
-_FB.accessToken
-_FB.signedRequest
+
+//Other data
+FB.getAccessToken()
+FB.getUserID()
+FB.getAuthResponse()
 ```
 
 ###Documentation

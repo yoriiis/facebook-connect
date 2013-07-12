@@ -16,15 +16,16 @@
 
 var _FB = {
 
-	init: function( appID, what, scope, callback ){
+	init: function( appID, what, scope ){
 		
 		var self 				= this,
-		timerAutoGetData 			= 500;
+			timerAutoGetData 	= 500;
 		this.what 				= what;
 		this.scope 				= scope;
-		this.callback 				= callback;
+		this.doc 				= $(document);
+		this.handlers			= {};
 
-		//Instanciate the Facebook apps with appID and channel url (optionnal)
+		//Instanciate the Facebook apps with appID
 		FB.init({
 			appId 				: appID,
 			status 				: true,
@@ -55,12 +56,12 @@ var _FB = {
 			self.status = response.status;
 
 			if( response.status === 'connected' ){
-				self.getData();
-			}else if( response.status === 'not_authorized' ){
-				self.login();
-			}else{
-				self.login();
-			}
+                self.getData();
+            }else if( response.status === 'not_authorized' ){
+                self.login();
+            }else{
+                self.login();
+            }
 
 		});
 
@@ -74,9 +75,9 @@ var _FB = {
 		FB.login(function( response ) {
 
 	        if( response.authResponse ) {
-			self.getData();
+	            self.getData();
 	        }else{
-			self.status = response.status;
+	        	self.status = response.status;
 	        }
 	        
 	    }, { scope: self.scope });
@@ -87,11 +88,16 @@ var _FB = {
 
 		var self = this;
 
-		//Call Open Grap API and save data
+		//Call Open Grap API
 		FB.api(self.what, function( response ) {
+
+			//Save user data
 			self.data = response;
-			self.callback();
-		});
+
+			//Trigger success event
+			self.trigger('connected');
+
+	    });
 
 	},
 
@@ -113,11 +119,31 @@ var _FB = {
 
 	},
 
+	on: function( eventName, method ){
+
+        var self = this;
+        this.handlers[ method ] = function(){ method.call( self ) };
+        this.doc.on( eventName, this.handlers[ method ] );
+
+    }, 
+
+	off: function( eventName, method ){
+
+        this.doc.off( eventName, this.handlers[ method ] );
+
+    },
+
+    trigger: function( eventName, datas ){
+
+        this.doc.trigger( eventName, ( typeof datas != 'undefined' ) ? datas : [] );
+
+    },
+
 	loadSDK: (function(){
 
 		//Get the language in data attribut if available, else default language
 		var defaultLanguage = 'fr_FR',
-		    language = ( document.getElementById('__FB').getAttribute('data-language') != null && document.getElementById('__FB').getAttribute('data-language') != '' ) ? document.getElementById('__FB').getAttribute('data-language') : defaultLanguage;
+			language = ( document.getElementById('__FB').getAttribute('data-language') != null && document.getElementById('__FB').getAttribute('data-language') != '' ) ? document.getElementById('__FB').getAttribute('data-language') : defaultLanguage;
 
 		//Load the Facebook SDK JS and add the tag "fb-root"
 		(function(d, s, id){
