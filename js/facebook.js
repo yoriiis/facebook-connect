@@ -19,7 +19,7 @@ var _FB = {
 	init: function( appID, what, scope ){
 		
 		var self 				= this,
-			timerAutoGetData 	= 500;
+		timerAutoGetData 			= 500;
 		this.what 				= what;
 		this.scope 				= scope;
 		this.doc 				= $(document);
@@ -56,12 +56,12 @@ var _FB = {
 			self.status = response.status;
 
 			if( response.status === 'connected' ){
-                self.getData();
-            }else if( response.status === 'not_authorized' ){
-                self.login();
-            }else{
-                self.login();
-            }
+				self.getData();
+			}else if( response.status === 'not_authorized' ){
+				self.login();
+			}else{
+				self.login();
+			}
 
 		});
 
@@ -75,7 +75,7 @@ var _FB = {
 		FB.login(function( response ) {
 
 	        if( response.authResponse ) {
-	            self.getData();
+			self.getData();
 	        }else{
 	        	self.status = response.status;
 	        }
@@ -97,7 +97,7 @@ var _FB = {
 			//Trigger success event
 			self.trigger('connected');
 
-	    });
+		});
 
 	},
 
@@ -121,23 +121,23 @@ var _FB = {
 
 	on: function( eventName, method ){
 
-        var self = this;
-        this.handlers[ method ] = function(){ method.call( self ) };
-        this.doc.on( eventName, this.handlers[ method ] );
-
-    }, 
+		var self = this;
+		this.handlers[ method ] = function(){ method.call( self ) };
+		this.doc.on( eventName, this.handlers[ method ] );
+	
+	}, 
 
 	off: function( eventName, method ){
 
-        this.doc.off( eventName, this.handlers[ method ] );
+		this.doc.off( eventName, this.handlers[ method ] );
+	
+	},
 
-    },
+	trigger: function( eventName, datas ){
 
-    trigger: function( eventName, datas ){
-
-        this.doc.trigger( eventName, ( typeof datas != 'undefined' ) ? datas : [] );
-
-    },
+		this.doc.trigger( eventName, ( typeof datas != 'undefined' ) ? datas : [] );
+	
+	},
 
 	loadSDK: (function(){
 
