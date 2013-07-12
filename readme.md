@@ -34,6 +34,15 @@ Connect the user with his Facebook account. If user isn't connected or authorize
 _FB.connect();
 ```
 
+###Attach event
+On success, attach to "connected" event width jQuery. Then you can access to data and execute your code.
+
+```javascript
+_FB.on('connected', function(){
+  console.log( this.data );
+});
+```
+
 
 Access to JSON data with _FB object available in window
 
