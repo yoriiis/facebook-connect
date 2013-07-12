@@ -110,7 +110,7 @@ var _FB = {
 			FB.XFBML.parse();
 
 			//AddClass in html tag when Facebook is ready 
-			document.getElementsByTagName("html")[0].className += ' fb-ready';
+			$('html').addClass('fb-ready')
 
 			//Your code
 			app();
