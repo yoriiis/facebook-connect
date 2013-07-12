@@ -24,19 +24,16 @@ This function instanciate your application and get automatically data if user is
 - Third parameter 		: The scope with permission on private data which require a token (separate by comma)
 
 ```javascript
-_FB.init('XXXXXXXXXXXXXXX', '/me', 'email,user_birthday', function(){
-	console.log( _FB.data );
-});
+_FB.init('XXXXXXXXXXXXXXX', '/me', 'email,user_birthday');
 ```
 
 ###Connection
 Connect the user with his Facebook account. If user isn't connected or authorized, popup authentification will open.
 
 ```javascript
-_FB.connect(function(){
-	console.log( _FB.data );
-});
+_FB.connect();
 ```
+
 
 Access to JSON data with _FB object available in window
 
