@@ -1,7 +1,7 @@
 /**
  *
  * Plugin: 
- * @version 1.0
+ * @version 1.1
  *
  * @author: Joris DANIEL
  * @fileoverview: Easy way to use the Facebook API 
@@ -16,20 +16,35 @@
 
 var _FB = {
 
-	init: function( appID, channelUrl ){
+	init: function( appID, what, scope, callback ){
 		
+		var self 				= this
+			timerAutoGetData 	= 500;
+		this.what 				= what;
+		this.scope 				= scope;
+		this.callback 			= callback;
+
 		//Instanciate the Facebook apps with appID and channel url (optionnal)
 		FB.init({
-			appId: appID,
-			channelUrl: ( typeof channelUrl != 'undefined' ) ? channelUrl : '',
-			status: true,
-			cookie: true,
-			xfbml: true
+			appId 				: appID,
+			status 				: true,
+			cookie 				: true,
+			xfbml 				: true
 		});
+
+		//Prevent Facebook API not ready
+		setTimeout(function(){
+
+			//If user already granted, auto get data
+			if( FB.getAuthResponse() ){
+				self.getData( what );
+			}
+
+		}, timerAutoGetData);
 
 	},
 
-	getLoginStatus: function( what, scope, callback ){
+	connect: function(){
 
 		var self = this;
 
@@ -40,64 +55,47 @@ var _FB = {
 			self.status = response.status;
 
 			if( response.status === 'connected' ){
-
-				//User is connected, get data
-                                self.getData( what, callback );
-
-            		}else if( response.status === 'not_authorized' ){
-
-	    			//User is not authorized
-	        		self.login( what, scope, callback );
-
-            		}else{
-
-		            	//Other case
-		                self.login( what, scope, callback );
-		
-			}
+                self.getData();
+            }else if( response.status === 'not_authorized' ){
+                self.login();
+            }else{
+                self.login();
+            }
 
 		});
 
 	},
 
-	login: function( what, scope, callback ){
+	login: function(){
 
 		var self = this;
 
 		//Facebook login function
 		FB.login(function( response ) {
 
-		        if( response.authResponse ) {
-	
-		        	//Save accessToken and signedRequest
-		        	self.accessToken = response.authResponse.accessToken;
-				self.signedRequest = response.authResponse.signedRequest;
-	
-		            	self.getData( what, callback );
-	
-		        }else{
-		        	self.status = response.status;
-		        }
-		        
-		}, {scope: scope});
+	        if( response.authResponse ) {
+	            self.getData();
+	        }else{
+	        	self.status = response.status;
+	        }
+	        
+	    }, {scope: 'email,user_birthday'});
 
 	},
 
-	getData: function( what, callback ){
+	getData: function(){
 
 		var self = this;
 
 		//Call Open Grap API and save data
-		FB.api(what, function( response ) {
-
+		FB.api(self.what, function( response ) {
 			self.data = response;
-			callback();
-
-		});
+			self.callback();
+	    });
 
 	},
 
-	ready: function( code ){
+	ready: function( app ){
 
 		//On Facebook ready
 		window.fbAsyncInit = function() {
@@ -109,7 +107,7 @@ var _FB = {
 			document.getElementsByTagName("html")[0].className += ' fb-ready';
 
 			//Your code
-			code();
+			app();
 			
 		};
 
@@ -119,7 +117,7 @@ var _FB = {
 
 		//Get the language in data attribut if available, else default language
 		var defaultLanguage = 'fr_FR',
-		    language = ( document.getElementById('__FB').getAttribute('data-language') != null && document.getElementById('__FB').getAttribute('data-language') != '' ) ? document.getElementById('__FB').getAttribute('data-language') : defaultLanguage;
+			language = ( document.getElementById('__FB').getAttribute('data-language') != null && document.getElementById('__FB').getAttribute('data-language') != '' ) ? document.getElementById('__FB').getAttribute('data-language') : defaultLanguage;
 
 		//Load the Facebook SDK JS and add the tag "fb-root"
 		(function(d, s, id){
