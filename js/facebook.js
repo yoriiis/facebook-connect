@@ -23,7 +23,7 @@ var _FB = {
 		this.what 				= what;
 		this.scope 				= scope;
 		this.doc 				= $(document);
-		this.handlers			= {};
+		this.handlers				= {};
 
 		//Instanciate the Facebook apps with appID
 		FB.init({
@@ -143,7 +143,7 @@ var _FB = {
 
 		//Get the language in data attribut if available, else default language
 		var defaultLanguage = 'fr_FR',
-			language = ( document.getElementById('__FB').getAttribute('data-language') != null && document.getElementById('__FB').getAttribute('data-language') != '' ) ? document.getElementById('__FB').getAttribute('data-language') : defaultLanguage;
+		    language = ( document.getElementById('__FB').getAttribute('data-language') != null && document.getElementById('__FB').getAttribute('data-language') != '' ) ? document.getElementById('__FB').getAttribute('data-language') : defaultLanguage;
 
 		//Load the Facebook SDK JS and add the tag "fb-root"
 		(function(d, s, id){
