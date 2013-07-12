@@ -3,7 +3,7 @@ Facebook connect
 
 Easy way to use the Facebook API and the connect interface.
 
-Add only the Facebook plugins in your footer page. You can choose the language of SDK with data-language attribut (optionnal), by default french. Don't add "fb-root" tag and the SDK, it's automatically add.
+Add only the Facebook plugins in your footer page. You can choose the language of SDK with data-language attribut (optionnal), by default french. Don't add "fb-root" tag and the SDK, it's automatically add. On Facebook ready, a CSS class is add in html tag (fb-ready)
 
 ```html
 <script src="js/facebook.js" id="__FB"></script>
