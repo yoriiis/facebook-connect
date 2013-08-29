@@ -23,11 +23,11 @@
 		init: function( appID, what, scope ){
 
 			var self 				= this,
-			timerAutoGetData 		= 500;
+			timerAutoGetData 			= 500;
 			this.what 				= what;
 			this.scope 				= scope;
 			this.doc 				= $(document);
-			this.handlers			= {};
+			this.handlers				= {};
 
 			//Instanciate the Facebook apps with appID
 			FB.init({
@@ -159,8 +159,8 @@
 		loadSDK: function( locale ){
 
 			var defaultLanguage = 'fr_FR',
-				async = true,
-				localeSDK = ( typeof locale != 'undefined' ) ? locale : defaultLanguage;
+			    async = true,
+			    localeSDK = ( typeof locale != 'undefined' ) ? locale : defaultLanguage;
 
 			//Load the Facebook SDK JS and add the tag "fb-root"
 			(function(d, s, id){
