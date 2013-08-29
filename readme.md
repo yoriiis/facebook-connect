@@ -3,17 +3,18 @@ Facebook connect
 
 Easy way to use the Facebook API and the connect interface.
 
-Add only the Facebook plugins in your footer page. You can choose the language of SDK with data-language attribut (optionnal), by default french. Don't add "fb-root" tag and the SDK, it's automatically add. On Facebook ready, a CSS class is add in html tag (fb-ready)
+Add only the Facebook plugins in your footer page. Don't add "fb-root" tag and the SDK, it's automatically add. On Facebook ready, a CSS class is add in html tag (fb-ready)
 
 ```html
-<script src="js/facebook.js" id="__FB"></script>
-<script src="js/facebook.js" data-language="en_US" id="__FB"></script>
+<script src="js/facebook.js"></script>
 ```
 
 Insert your code in _FB.ready function (single instance, equivalent to window.fbAsyncInit function).
+You can choose the language of SDK in first parameter (optionnal), by default fr_FR.
 
 ```javascript
 _FB.ready(function(){ });
+_FB.ready('en_US', function(){ });
 ```
 
 ###Instanciate Facebook app.
@@ -34,15 +35,20 @@ Connect the user with his Facebook account. If user isn't connected or authorize
 _FB.connect();
 ```
 
-###Attach event
-On success, attach to "connected" event width jQuery. Then you can access to data and execute your code.
+###Events
+
+```javascript
+connected
+not_authorized
+```
+
+### Attach an event
 
 ```javascript
 _FB.on('connected', function(){
-  console.log( this.data );
+  console.log( this.data, this.status );
 });
 ```
-
 
 Access to JSON data with _FB object available in window
 
