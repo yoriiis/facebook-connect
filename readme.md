@@ -62,5 +62,6 @@ FB.getAuthResponse()
 ```
 
 ###Documentation
+- https://developers.facebook.com/docs/reference/login/
 - https://developers.facebook.com/docs/reference/api/
 - https://developers.facebook.com/tools/explorer/
