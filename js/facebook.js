@@ -14,172 +14,172 @@
 
 (function ($, window) {
 
-	"use strict";
+    "use strict";
 
-	var _FB = {};
+    var _FB = {};
 
-	_FB = {
+    _FB = {
 
-		init: function( appID, what, scope ){
+        init: function( appID, what, scope ){
 
-			var self 				= this,
-			timerAutoGetData 			= 500;
-			this.what 				= what;
-			this.scope 				= scope;
-			this.doc 				= $(document);
-			this.handlers				= {};
+            var self                = this,
+            timerAutoGetData        = 500;
+            this.what               = what;
+            this.authorization      = scope;
+            this.doc                = $(document);
+            this.handlers           = {};
 
-			//Instanciate the Facebook apps with appID
-			FB.init({
-				appId 				: appID,
-				status 				: true,
-				cookie 				: true,
-				xfbml 				: true
-			});
+            //Instanciate the Facebook apps with appID
+            FB.init({
+                appId               : appID,
+                status              : true,
+                cookie              : true,
+                xfbml               : true
+            });
 
-			//Prevent Facebook API not ready
-			setTimeout(function(){
+            //Prevent Facebook API not ready
+            setTimeout(function(){
 
-				//If user already granted, auto get data
-				if( FB.getAuthResponse() ){
-					self.status = 'connected';
-					self.getData();
-				}
+                //If user already granted, auto get data
+                if( FB.getAuthResponse() ){
+                    self.status = 'connected';
+                    self.getData();
+                }
 
-			}, timerAutoGetData);
+            }, timerAutoGetData);
 
-		},
+        },
 
-		connect: function(){
+        connect: function(){
 
-			var self = this;
+            var self = this;
 
-			//Check status of Facebook connection
-			FB.getLoginStatus(function( response ) {
+            //Check status of Facebook connection
+            FB.getLoginStatus(function( response ) {
 
-				//Status of the connection
-				self.status = response.status;
+                //Status of the connection
+                self.status = response.status;
 
-				if( response.status === 'connected' ){
-					self.getData();
-				}else if( response.status === 'not_authorized' ){
-					self.login();
-				}else{
-					self.login();
-				}
+                if( response.status === 'connected' ){
+                    self.getData();
+                }else if( response.status === 'not_authorized' ){
+                    self.login();
+                }else{
+                    self.login();
+                }
 
-			});
+            });
 
-		},
+        },
 
-		login: function(){
+        login: function(){
 
-			var self = this;
+            var self = this;
 
-			//Facebook login function
-			FB.login(function( response ) {
+            //Facebook login function
+            FB.login(function( response ) {
 
-				self.status = response.status;
+                self.status = response.status;
 
-		        if( response.authResponse ) {
-					self.getData();
-		        }else{
-		        	
-		        	if( response.status === 'not_authorized' ){
-		        		self.trigger('not_authorized');
-		        	}
+                if( response.authResponse ) {
+                    self.getData();
+                }else{
 
-		        }
+                    if( response.status === 'not_authorized' ){
+                        self.trigger('not_authorized');
+                    }
 
-		    }, { scope: self.scope });
+                }
 
-		},
+            }, { scope: self.authorization });
 
-		getData: function(){
+        },
 
-			var self = this;
+        getData: function(){
 
-			//Call Open Grap API
-			FB.api(self.what, function( response ) {
+            var self = this;
 
-				//Save user data and status
-				self.data = response;
+            //Call Open Grap API
+            FB.api(self.what, function( response ) {
 
-				//Trigger success event
-				self.trigger('connected');
+                //Save user data and status
+                self.data = response;
 
-			});
+                //Trigger success event
+                self.trigger('connected');
 
-		},
+            });
 
-		ready: function( locale, app ){
+        },
 
-			//On Facebook ready
-			window.fbAsyncInit = function() {
+        ready: function( locale, app ){
 
-				//Parse the DOM to instanciate Facebook plugins (Like)
-				FB.XFBML.parse();
+            //On Facebook ready
+            window.fbAsyncInit = function() {
 
-				//AddClass in html tag when Facebook is ready
-				$('html').addClass('fb-ready');
+                //Parse the DOM to instanciate Facebook plugins (Like)
+                FB.XFBML.parse();
 
-				//Your code
-				app();
+                //AddClass in html tag when Facebook is ready
+                $('html').addClass('fb-ready');
 
-			};
+                //Your code
+                app();
 
-			if( arguments.length == 2 ){
-				this.loadSDK( arguments[0] );
-			}else{
-				this.loadSDK();
-			}
+            };
 
-		},
+            if( arguments.length == 2 ){
+                this.loadSDK( arguments[0] );
+            }else{
+                this.loadSDK();
+            }
 
-		on: function( eventName, method ){
+        },
 
-			var self = this;
-			this.handlers[ method ] = function(){ method.call( self ) };
-			this.doc.on( eventName, this.handlers[ method ] );
+        on: function( eventName, method ){
 
-		},
+            var self = this;
+            this.handlers[ method ] = function(){ method.call( self ) };
+            this.doc.on( eventName, this.handlers[ method ] );
 
-		off: function( eventName, method ){
+        },
 
-			this.doc.off( eventName, this.handlers[ method ] );
+        off: function( eventName, method ){
 
-		},
+            this.doc.off( eventName, this.handlers[ method ] );
 
-		trigger: function( eventName, datas ){
+        },
 
-			this.doc.trigger( eventName, ( typeof datas != 'undefined' ) ? datas : [] );
+        trigger: function( eventName, datas ){
 
-		},
+            this.doc.trigger( eventName, ( typeof datas != 'undefined' ) ? datas : [] );
 
-		loadSDK: function( locale ){
+        },
 
-			var defaultLanguage = 'fr_FR',
-			    async = true,
-			    localeSDK = ( typeof locale != 'undefined' ) ? locale : defaultLanguage;
+        loadSDK: function( locale ){
 
-			//Load the Facebook SDK JS and add the tag "fb-root"
-			(function(d, s, id){
+            var defaultLanguage = 'fr_FR',
+                async = true,
+                localeSDK = ( typeof locale != 'undefined' ) ? locale : defaultLanguage;
 
-				var js, tag = document.createElement('div');
-				if (d.getElementById(id)) {return;}
-				tag.id = 'fb-root';
-				js = d.createElement(s); js.id = id; js.async = async;
-				js.src = "//connect.facebook.net/" + localeSDK + "/all.js";
-				d.getElementsByTagName('body')[0].appendChild( tag );
-				d.getElementsByTagName('body')[0].appendChild( js );
+            //Load the Facebook SDK JS and add the tag "fb-root"
+            (function(d, s, id){
 
-			}(document, 'script', 'facebook-jssdk'));
+                var js, tag = document.createElement('div');
+                if (d.getElementById(id)) {return;}
+                tag.id = 'fb-root';
+                js = d.createElement(s); js.id = id; js.async = async;
+                js.src = "//connect.facebook.net/" + localeSDK + "/all.js";
+                d.getElementsByTagName('body')[0].appendChild( tag );
+                d.getElementsByTagName('body')[0].appendChild( js );
 
-		}
+            }(document, 'script', 'facebook-jssdk'));
 
-	};
+        }
 
-	//Push _FB in window
-	window._FB = _FB;
+    };
+
+    //Push _FB in window
+    window._FB = _FB;
 
 })( jQuery, window );
