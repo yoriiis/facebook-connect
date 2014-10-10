@@ -3,65 +3,85 @@ Facebook connect
 
 Easy way to use the Facebook API and the connect interface.
 
-Add only the Facebook plugins in your footer page. Don't add "fb-root" tag and the SDK, it's automatically add. On Facebook ready, a CSS class is add in html tag (fb-ready)
+Add only this Facebook script in your footer page. Don't add "fb-root" tag and the SDK, all it's automatically add for you. On Facebook ready, a CSS class is add in html tag (fb-ready)
 
-```html
-<script src="js/facebook.js"></script>
-```
-
-Insert your code in _FB.ready function (single instance, equivalent to window.fbAsyncInit function).
-You can choose the language of SDK in first parameter (optionnal), by default fr_FR.
+Quickstart
+--------------------------------------
 
 ```javascript
-_FB.ready(function(){ });
-_FB.ready('en_US', function(){ });
+_facebook.init({
+    appID: 'XXXXXXXXXXXXXXX',
+    locale: 'fr_FR',
+    async: true,
+    target: '/me',
+    authorization: 'email',
+    xfbml: true,
+    status: true,
+    version: 'v2.0',
+    debug: false
+}, callback);
 ```
 
-###Instanciate Facebook app.
-This function instanciate your application and get automatically data if user is already connected and authorized.
-
-- First parameter 		: Facebook application ID
-- Second parameter 		: What you want to get
-- Third parameter 		: The scope with permission on private data which require a token (separate by comma)
+###SDK
+You can choose the language of the SDK (default is fr_FR), and the version (default is last 2.1). Option debug allow you to activate the debug mode of the Facebook SDK. By default the SDK is load in asynchronous mode.
 
 ```javascript
-_FB.init('XXXXXXXXXXXXXXX', '/me', 'email,user_birthday');
+locale : 'fr_FR',
+version: 'v2.0',
+debug: false,
+async: true
 ```
 
-###Connection
-Connect the user with his Facebook account. If user isn't connected or authorized, popup authentification will open.
+###Login
+The script use the Facebook login functionnality, with a few parameters that you makes this easy ! Target "me" matching to your Facebook account, and authorization is what do you want to recover (separate by comma). The status option at true use the SDK to get info about the current user immediately after init.
 
 ```javascript
-_FB.connect();
+target: '/me',
+authorization: 'email',
+status: true
 ```
 
-###Events
+###XFBML
+With xfbml set to true, the SDK will parse your page's DOM to find and initialize any social plugins that have been added.
 
 ```javascript
-connected
-not_authorized
+xfbml: true
 ```
 
-### Attach an event
+###Callback
+The callback function is use to write your code, and it will be execute on Facebook ready (equivalent to window.fbAsyncInit function).
+
+Invoking the Login
+--------------------------------------
+
+On Facebook ready callback, you can start the connection.
 
 ```javascript
-_FB.on('connected', function(){
-  console.log( this.data, this.status );
+_facebook.connect();
+```
+  
+Events
+--------------------------------------
+
+On facebook ready callback, you can attach to two events that share parameters, "datas" contains all data from the user account, and "status", the status of the connection.
+
+```javascript
+_facebook.on('connected', function(e, datas, status) {
+    console.log(datas, status);
+});
+
+_facebook.on('not_authorized', function(e, status) {
+    console.log("error::", status);
 });
 ```
 
-Access to JSON data with _FB object available in window
-
+Facebook give you access to other datas
 ```javascript
-_FB.data
-
-//Other data
 FB.getAccessToken()
 FB.getUserID()
 FB.getAuthResponse()
 ```
 
 ###Documentation
-- https://developers.facebook.com/docs/reference/login/
 - https://developers.facebook.com/docs/reference/api/
 - https://developers.facebook.com/tools/explorer/
