@@ -1,35 +1,36 @@
-(function ($, window) {
+(function($, window) {
 
-	"use strict";
+    "use strict";
 
-	$(document).on('ready', function(){
+    $(document).on('ready', function() {
 
-		_FB.ready('en_US', function(){
-			
-			_FB.init('XXXXXXXXXXXXXXX', '/me', 'email,user_birthday');
+        _facebook.init({
+            appID: 'XXXXXXXXXXXXXXX',
+            locale: 'fr_FR',
+            async: true,
+            target: '/me',
+            authorization: 'email',
+            xfbml: true,
+            status: true,
+            version: 'v2.0',
+            debug: false
+        }, function() {
 
-			$('.fb-connect').on('click', function(e){
+            $('.fb-connect').on('click', function(e) {
+                e.preventDefault();
+                _facebook.connect();
+            });
 
-				e.preventDefault();
-				_FB.connect();
+            _facebook.on('connected', function(e, datas, status) {
+                console.log(datas, status);
+            });
 
-			});
+            _facebook.on('not_authorized', function(e, status) {
+                console.log("error::", status);
+            });
 
-			_FB.on('connected', function(){
+        });
 
-				console.log( this.data );
+    });
 
-			});
-
-			_FB.on('not_authorized', function(){
-
-				console.log( 'not_authorized' );
-
-			});
-
-		});
-
-
-	});
-
-})( jQuery, window );
+})(jQuery, window);
