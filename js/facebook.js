@@ -32,7 +32,7 @@
                 authorization: '',
                 xfbml: true,
                 status: true,
-                version: 'v2.1',
+                version: 'v2.5',
                 debug: false
             }, options);
 

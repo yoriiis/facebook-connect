@@ -1,0 +1,30 @@
+{
+  "name": "facebook-connect",
+  "version": "1.3.0",
+  "description": "Easy way to use the Facebook API and the connect interface",
+  "main": "./js/facebook.js",
+  "moduleType": [
+    "globals"
+  ],
+  "dependencies"  : {
+    "jquery"  : ">=1.7.0"
+  },
+  "keywords": [
+    "social",
+    "social network api",
+    "social api",
+    "facebook",
+    "facebook api",
+    "fb",
+    "facebook connect"
+  ],
+  "ignore": [
+    "js/app.js",
+    "index.html"
+  ],
+  "authors": [
+    "Joris DANIEL"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/yoriiis/facebook-connect"
+}
