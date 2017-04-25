@@ -22,7 +22,7 @@ _facebook.init({
 }, callback);
 ```
 
-###SDK
+### SDK
 You can choose the language of the SDK (default is fr_FR), and the version (default is last 2.1). Option debug allow you to activate the debug mode of the Facebook SDK. By default the SDK is load in asynchronous mode.
 
 ```javascript
@@ -32,7 +32,7 @@ debug: false,
 async: true
 ```
 
-###Login
+### Login
 The script use the Facebook login functionnality, with a few parameters that you makes this easy ! Target "me" matching to your Facebook account, and authorization is what do you want to recover (separate by comma). The status option at true use the SDK to get info about the current user immediately after init.
 
 ```javascript
@@ -41,14 +41,14 @@ authorization: 'email',
 status: true
 ```
 
-###XFBML
+### XFBML
 With xfbml set to true, the SDK will parse your page's DOM to find and initialize any social plugins that have been added.
 
 ```javascript
 xfbml: true
 ```
 
-###Callback
+### Callback
 The callback function is use to write your code, and it will be execute on Facebook ready (equivalent to window.fbAsyncInit function).
 
 Invoking the Login
